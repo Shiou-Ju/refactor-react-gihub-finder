@@ -1,59 +1,49 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-export class Search extends Component {
-  state = {
-    text: "",
-  };
+const Search = ({ searchUsers, showClear, clearUsers, setAlert }) => {
+  // pull out state XXX, and use setXXX as the action, initial value in brackets
+  // create text state here, also create value of 'text'
+  const [text, setText] = useState("");
 
-  static propTypes = {
-    searchUsers: PropTypes.func.isRequired,
-    clearUsers: PropTypes.func.isRequired,
-    showClear: PropTypes.bool.isRequired,
-    setAlert: PropTypes.func.isRequired,
-  };
+  const onChange = (event) => setText(event.target.value);
 
-  onChange = (event) =>
-    this.setState({ [event.target.name]: event.target.value });
-
-  // if not using arrow function, you have to bind `this` when invoking submit down there
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
-    if (this.state.text === "") {
-      this.props.setAlert(`請輸入內容`, `light`);
+    if (text === "") {
+      setAlert(`請輸入內容`, `light`);
     } else {
-      this.props.searchUsers(this.state.text);
-      this.setState({ text: "" });
+      searchUsers(text);
+      setText("");
     }
   };
 
-  render() {
-    const { showClear, clearUsers } = this.props;
+  return (
+    <div>
+      <form onSubmit={onSubmit} className="form">
+        <input
+          type="text"
+          name="text"
+          placeholder="搜尋用戶"
+          value={text}
+          onChange={onChange}
+        />
+        <input type="submit" value="搜尋" className="btn btn-dark btn-block" />
+      </form>
+      {showClear && (
+        <button className="btn btn-light btn-block" onClick={clearUsers}>
+          清除搜尋結果
+        </button>
+      )}
+    </div>
+  );
+};
 
-    return (
-      <div>
-        <form onSubmit={this.onSubmit} className="form">
-          <input
-            type="text"
-            name="text"
-            placeholder="搜尋用戶"
-            value={this.state.text}
-            onChange={this.onChange}
-          />
-          <input
-            type="submit"
-            value="搜尋"
-            className="btn btn-dark btn-block"
-          />
-        </form>
-        {showClear && (
-          <button className="btn btn-light btn-block" onClick={clearUsers}>
-            清除搜尋結果
-          </button>
-        )}
-      </div>
-    );
-  }
-}
+Search.propTypes = {
+  searchUsers: PropTypes.func.isRequired,
+  clearUsers: PropTypes.func.isRequired,
+  showClear: PropTypes.bool.isRequired,
+  setAlert: PropTypes.func.isRequired,
+};
 
 export default Search;
