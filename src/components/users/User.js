@@ -1,14 +1,13 @@
 import React, { Fragment, useEffect, useContext } from "react";
 import { Spinner } from "../layout/Spinner";
 import { Repos } from "../repos/Repos";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import GithubContext from "../../context/github/githubContext";
 
-const User = ({ repos, getUserRepos, match }) => {
+const User = ({ match }) => {
   // initialize context hook
   const githubContext = useContext(GithubContext);
-  const { user, loading, getUser } = githubContext;
+  const { loading, user, getUser, getUserRepos } = githubContext;
 
   // change componentDidMount in useEffect way
   // use [] to give conditions for useEffect to run
@@ -102,14 +101,9 @@ const User = ({ repos, getUserRepos, match }) => {
         <div className="badge badge-light">公開Repo：{public_repos}</div>
         <div className="badge badge-dark">公開Gist：{public_gists}</div>
       </div>
-      <Repos repos={repos} />
+      <Repos />
     </Fragment>
   );
-};
-
-User.propTypes = {
-  repos: PropTypes.array.isRequired,
-  getUserRepos: PropTypes.func.isRequired,
 };
 
 export default User;
