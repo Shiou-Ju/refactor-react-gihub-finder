@@ -1,10 +1,15 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useContext } from "react";
 import { Spinner } from "../layout/Spinner";
 import { Repos } from "../repos/Repos";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import GithubContext from "../../context/github/githubContext";
 
-const User = ({ user, loading, repos, getUser, getUserRepos, match }) => {
+const User = ({ repos, getUserRepos, match }) => {
+  // initialize context hook
+  const githubContext = useContext(GithubContext);
+  const { user, loading, getUser } = githubContext;
+
   // change componentDidMount in useEffect way
   // use [] to give conditions for useEffect to run
   // otherwise it will keep updating the components as a loop
@@ -14,7 +19,7 @@ const User = ({ user, loading, repos, getUser, getUserRepos, match }) => {
     getUserRepos(match.params.login);
     // to disable dependemcy warning
     //eslint-disable-next-line
-  },   []);
+  }, []);
 
   const {
     name,
@@ -103,10 +108,7 @@ const User = ({ user, loading, repos, getUser, getUserRepos, match }) => {
 };
 
 User.propTypes = {
-  loading: PropTypes.bool,
-  user: PropTypes.object.isRequired,
   repos: PropTypes.array.isRequired,
-  getUser: PropTypes.func.isRequired,
   getUserRepos: PropTypes.func.isRequired,
 };
 
