@@ -29,25 +29,28 @@ const GithubState = (props) => {
     const res = await axios.get(
       `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     );
-   dispatch({type:SEARCH_USERS,payload:res.data.items})
-
+    dispatch({ type: SEARCH_USERS, payload: res.data.items });
   };
   // get user
   // get repos
   // clear users
+  // clear users from state
+  const clearUsers = () => dispatch({ type: ClEAR_USERS });
   // set loading
-  const setLoading = () =>  dispatch({  type:  SET_LOADING  });
+  const setLoading = () => dispatch({ type: SET_LOADING });
 
   // return provider that wrap everything here inside
   return (
     <GithubContext.Provider
       // make props here available in the entire app
-      value={{ // value of 'context'
+      value={{
+        // value of 'context'
         users: state.users,
         user: state.user,
         repos: state.repos,
         loading: state.loading,
         searchUsers,
+        clearUsers,
       }}
     >
       {props.children}
