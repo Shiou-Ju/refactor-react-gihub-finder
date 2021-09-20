@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import PropTypes from "prop-types";
 import GithubContext from "../../context/github/githubContext";
+import AlertContext from "../../context/alert/alertContext";
 
-const Search = ({ setAlert }) => {
+const Search = () => {
   // initialize context hook
   const githubContext = useContext(GithubContext);
+  const alertContext = useContext(AlertContext);
 
   // pull out state XXX, and use setXXX as the action, initial value in brackets
   // create text state here, also create value of 'text'
@@ -15,7 +16,7 @@ const Search = ({ setAlert }) => {
   const onSubmit = (event) => {
     event.preventDefault();
     if (text === "") {
-      setAlert(`請輸入內容`, `light`);
+      alertContext.setAlert(`請輸入內容`, `light`);
     } else {
       githubContext.searchUsers(text);
       setText("");
@@ -44,10 +45,6 @@ const Search = ({ setAlert }) => {
       )}
     </div>
   );
-};
-
-Search.propTypes = {
-  setAlert: PropTypes.func.isRequired,
 };
 
 export default Search;
